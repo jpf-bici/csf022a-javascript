@@ -34,12 +34,51 @@
 
 var calcu = function(calcValue) {
 	"use strict";
+	// need to remove the spaces in the html button values		
+	calcValue = calcValue.trim();
 	switch (calcValue) {
 		// Add missing code here
+		case "0":
+			document.calc.output.value += calcValue;
+			break;
+		case "1":
+		    document.calc.output.value += calcValue;
+          	break;
+		case "2":
+			break;
+		case "3":
+			break;
+		case "4":
+			break;
+		case "5":
+			break;
+		case "6":
+			break;
+		case "7":
+			break;
+		case "8":
+			break;
+		case "9":
+			break;
+
+		case "+":
+			break;
+		case "-":
+			break;
+		case "x":
+			break;
+		case "&divide;":
+			break
+
+		case "C":
+			document.calc.output.value = "";
+			break;
 
 		case "equate":
-			// use the math.eval() function from the Math.js math library to parse and evaluate the String with mathematics in it
-			calc.output.value = math.eval(calc.output.value);
+			// use the math.eval() function from the Math.js math library to parse and evaluate 
+			// the String with mathematics in it
+			// calc -> calcu ???
+			document.calc.output.value = math.eval(calc.output.value);
 			break;
 	}
 };

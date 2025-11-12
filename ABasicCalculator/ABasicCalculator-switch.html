@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <link rel="stylesheet" href="js/test/lib/jasmine-3.8.0/jasmine.css" />
@@ -17,11 +17,12 @@
     <!-- source files -->
     <script defer src="js/vendor/math.js"></script>
     <!-- add script tag linking to switch.js here -->
+    <script defer src="js/switch.js"></script>
     <!-- test spec files -->
     <script defer src="js/test/switchSpec.js"></script>
   </head>
   <body>
-    <h1>Your Name Goes Here!</h1>
+    <h1>Steven Yuan, Jorge Pont</h1>
     <!-- Replace "Your Name Goes Here!" with your first and last name, thanks! -->
 
     <div id="content">
@@ -33,7 +34,12 @@
 
           <!-- the name of the textbox is "output" -->
           <br />
-          <input type="button" name="one" value="  1  " />
+          <input
+            type="button"
+            name="one"
+            value="  1  "
+            onclick="calcu(value)"
+          />
           <input type="button" name="two" value="  2  " />
           <input type="button" name="three" value="  3  " />
           <input type="button" name="add" value="  +  " /> <br />
@@ -45,8 +51,18 @@
           <input type="button" name="eight" value="  8  " />
           <input type="button" name="nine" value="  9  " />
           <input type="button" name="multiply" value="  x  " /> <br />
-          <input type="button" name="clear" value="  C  " />
-          <input type="button" name="zero" value="  0  " />
+          <input
+            type="button"
+            name="clear"
+            value="  C  "
+            onclick="calcu(value)"
+          />
+          <input
+            type="button"
+            name="zero"
+            value="  0  "
+            onclick="calcu(value)"
+          />
           <input type="button" name="equate" value="  =  " />
           <input type="button" name="divide" value="&divide;" />
         </form>

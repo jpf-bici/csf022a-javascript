@@ -8,6 +8,12 @@
   function estimateTotal(event) {
     event.preventDefault;
 
-    console.log("You submitted the form");
+    var state = document.getElementById('s-state');
+    if (state.value === "") {
+      alert('Please select a state.');
+      state.focus();
+      return;
+    }
+
   }
 })();
