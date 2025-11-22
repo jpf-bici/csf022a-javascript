@@ -27,6 +27,10 @@ DEBUG:true, $:false, intlTelInput:true */
 //This 'flag' variable controls if we output debugging info to the console or not
 var DEBUG = true;
 
+//==============================================================================
+// intlTelInput plugin code
+//==============================================================================
+
 // Setup variables for using the intlTelInput plugin:
 // Since version 14, intlTelInput removed the jQuery dependency, so select the
 // HTML Element with the id of "phone" withOUT using jQuery
@@ -49,12 +53,9 @@ var errorMap = [
 
 // TODO: initialize intlTelInput plugin to use the utilsScript to load Google's
 // libphonenumber utility
-// (use the following path
-// js/vendor/intl-tel-input-master/build/js/utils.js ).
-// See in this project:
-// js/vendor/intl-tel-input-master/examples/gen/is-valid-number.html
+// (use the following path: js/vendor/intl-tel-input-master/build/js/utils.js ).
+// See in this project: js/vendor/intl-tel-input-master/examples/gen/is-valid-number.html
 var iti = window.intlTelInput(telInput, {
-  // Use the correct option name so the utils file actually loads
   utilsScript: "/js/vendor/intl-tel-input-master/build/js/utils.js",
 });
 
@@ -107,9 +108,13 @@ telInput.addEventListener(
 telInput.addEventListener("change", reset, false);
 telInput.addEventListener("keyup", reset, false);
 
+// END intlTelInput plugin code =================================================
+
+// ==============================================================================
 // The purpose of processFormData is to do final validation checks,
 // and to stop the form from submitting,
 // but you can also use it to help with debugging
+// ==============================================================================
 
 var processFormData = function (event) {
   // prevent the default behavior of the form submit event
@@ -167,7 +172,12 @@ var processFormData = function (event) {
     return true;
   };
 
+  // END processFormData function ==================================================
+
+  //==============================================================================
   // Validate the form
+  // using the jQuery Validation Plugin
+  //==============================================================================
   $form.validate({
     rules: {
       // TODO: Make sure the planting date has been set by the
@@ -175,10 +185,15 @@ var processFormData = function (event) {
       // Input will be in 24 hour format but the display in modern
       // browsers will be use AM/PM formatting.
       // See: http://jqueryvalidation.org/dateISO-method/
-      /* TODO: Make sure you check in browser consoles that the result of
-	    $("#planting_date").val() is something like "2022-06-08"
-		and NOT something like "06/08/2022" and NOT like "22-06-08"
-		*/
+      planting_date: {
+        required: true,
+        dateISO: true,
+      },
+    },
+    messages: {
+      // TODO: Make sure you check in browser consoles that the result of
+      // $("#planting_date").val() is something like "2022-06-08"
+      // and NOT something like "06/08/2022" and NOT like "22-06-08"
     },
     invalidHandler: function (event, validator) {
       // Inside this function 'this' refers to the form
@@ -205,6 +220,7 @@ var processFormData = function (event) {
   // returning false also stops the form from submitting
   return submitOnlyIfValid($form);
 };
+// END processFormData function ==================================================
 
 // If the browser supports the date input type, don't do anything
 // This code is cribbed from
@@ -217,13 +233,13 @@ var initDatePicker = function () {
   }
   if (!Modernizr.inputtypes.date) {
     /* TODO: The browser doesn't support native datepickers,
-		so use the jQuery UI Date Picker on the planting date input element.
-		Initialize the datepicker with the dateFormat option set to 'yy-mm-dd'
-		which will make the date have a 4 digit year
-		(confusingly for jQuery UI y means a 2 digit year
-		and yy means a 4 digit year), and have 2 digit months and days.
-		See: https://api.jqueryui.com/datepicker/#option-dateFormat
-		*/
+	so use the jQuery UI Date Picker on the planting date input element.
+	Initialize the datepicker with the dateFormat option set to 'yy-mm-dd'
+	which will make the date have a 4 digit year
+	(confusingly for jQuery UI y means a 2 digit year
+	and yy means a 4 digit year), and have 2 digit months and days.
+	See: https://api.jqueryui.com/datepicker/#option-dateFormat
+	*/
   }
 };
 // Initialize the jQuery UI plugin's DatePicker plugin for the planting time
@@ -231,3 +247,8 @@ initDatePicker();
 
 // TODO: Initialize the jquery-timepicker plugin for the planting time
 // See in this project the Basic Example at: timepickerexample.html
+// Note: file is at: js/vendor/jquery-timepicker/jquery.timepicker.js
+// and is linked in the html file
+// Time format is also 'hh:mm tt' (12 hour format with AM/PM)
+// is also set in the html element
+$("#planting_time").timepicker();

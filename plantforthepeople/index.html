@@ -350,6 +350,9 @@
           </p>
           <p class="row">
             <label for="phone">Phone:</label>
+            <!-- removed the +1 in the placeholder phone below 
+             as it was confusing and conflicting with the drop down 
+             country selection -->
             <input
               name="phone"
               type="tel"
@@ -358,7 +361,7 @@
               id="phone"
               autocomplete="off"
               data-intl-tel-input-id="0"
-              placeholder="+1 (650) 555-0123"
+              placeholder="(650) 555-0123"
             />
             <!-- added green color -->
             <span id="valid-msg" style="display: none; color: green"
