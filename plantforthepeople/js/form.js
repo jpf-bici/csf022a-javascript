@@ -225,6 +225,8 @@ var processFormData = function (event) {
 // If the browser supports the date input type, don't do anything
 // This code is cribbed from
 // http://code.tutsplus.com/tutorials/quick-tip-cross-browser-datepickers-within-minutes--net-20236
+//
+// Firefox does not have a native datepicker, so will need to use jQuery UI DatePicker
 var initDatePicker = function () {
   // Modernizr (https://modernizr.com/) gives you the ability to detect
   // whether the browser supports native datepickers.
@@ -240,6 +242,9 @@ var initDatePicker = function () {
 	and yy means a 4 digit year), and have 2 digit months and days.
 	See: https://api.jqueryui.com/datepicker/#option-dateFormat
 	*/
+    $("#planting_date").datepicker({
+      dateFormat: "yy-mm-dd",
+    });
   }
 };
 // Initialize the jQuery UI plugin's DatePicker plugin for the planting time
@@ -250,5 +255,6 @@ initDatePicker();
 // Note: file is at: js/vendor/jquery-timepicker/jquery.timepicker.js
 // and is linked in the html file
 // Time format is also 'hh:mm tt' (12 hour format with AM/PM)
-// is also set in the html element
+// is set in the html element
+// Note that formats can also be set here in the initialization code
 $("#planting_time").timepicker();

@@ -274,21 +274,23 @@ window.onload = function () {
 	an error) and set the volume to 1.0 if the current volume is too
 	close to 1.0
 	*/
-    if (mediaElement.volume <= 1.0) {
-      mediaElement.volume += 0.1; // use 0.1 increments (0=min, 1=max vol)
+    if (mediaElement.volume >= 0.9) {
+      mediaElement.volume = 1.0; // use 0.1 increments (0=min, 1=max vol)
+    } else {
+      mediaElement.volume += 0.1;
     }
   };
 
-  increaseVolumeButton1.onclick = function (event) {
+  increaseVolumeButton1.onclick = function () {
     increaseVolume(mediaElement1);
   };
-  increaseVolumeButton2.onclick = function (event) {
+  increaseVolumeButton2.onclick = function () {
     increaseVolume(mediaElement2);
   };
-  increaseVolumeButton3.onclick = function (event) {
+  increaseVolumeButton3.onclick = function () {
     increaseVolume(mediaElement3);
   };
-  increaseVolumeButton4.onclick = function (event) {
+  increaseVolumeButton4.onclick = function () {
     increaseVolume(mediaElement4);
   };
 
@@ -299,21 +301,23 @@ window.onload = function () {
 	an error) and set the volume to 0.0 if the current volume is too
 	close to 0.0
 	*/
-    if (mediaElement.volume >= 0.0) {
-      mediaElement.volume -= 0.1; // use 0.1 increments (0=min, 1=max vol)
+    if (mediaElement.volume <= 0.1) {
+      mediaElement.volume = 0; // use 0.1 increments (0=min, 1=max vol)
+    } else {
+      mediaElement.volume -= 0.1;
     }
   };
 
-  decreaseVolumeButton1.onclick = function (event) {
+  decreaseVolumeButton1.onclick = function () {
     decreaseVolume(mediaElement1);
   };
-  decreaseVolumeButton2.onclick = function (event) {
+  decreaseVolumeButton2.onclick = function () {
     decreaseVolume(mediaElement2);
   };
-  decreaseVolumeButton3.onclick = function (event) {
+  decreaseVolumeButton3.onclick = function () {
     decreaseVolume(mediaElement3);
   };
-  decreaseVolumeButton4.onclick = function (event) {
+  decreaseVolumeButton4.onclick = function () {
     decreaseVolume(mediaElement4);
   };
 };
