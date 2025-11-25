@@ -56,7 +56,7 @@ var errorMap = [
 // (use the following path: js/vendor/intl-tel-input-master/build/js/utils.js ).
 // See in this project: js/vendor/intl-tel-input-master/examples/gen/is-valid-number.html
 var iti = window.intlTelInput(telInput, {
-  utilsScript: "/js/vendor/intl-tel-input-master/build/js/utils.js",
+  utilsScript: "./js/vendor/intl-tel-input-master/build/js/utils.js",
 });
 
 // TODO: In the functions below, use the following documentation page,
