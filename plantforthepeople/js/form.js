@@ -220,8 +220,11 @@ var processFormData = function (event) {
   // returning false also stops the form from submitting
   return submitOnlyIfValid($form);
 };
-// END processFormData function ==================================================
+// END processFormData function ================================================
 
+//==============================================================================
+// jQuery UI DatePicker plugin code
+//==============================================================================
 // If the browser supports the date input type, don't do anything
 // This code is cribbed from
 // http://code.tutsplus.com/tutorials/quick-tip-cross-browser-datepickers-within-minutes--net-20236
