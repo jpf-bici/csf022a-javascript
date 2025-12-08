@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>jQuery.getJSON demo</title>
+    <style>
+      img {
+        height: 100px;
+        float: left;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  </head>
+  <body>
+    <!-- adding user input in a form -->
+    <!-- Enclosing user input in a <form> is the standard and recommended pattern.
+         When JavaScript handles the submission, 
+         forms give you structured, predictable, accessible behavior with minimal code.
+    -->
+    <form id="photoForm">
+      <input type="text" id="tagInput" placeholder="Enter a tag" />
+      <button type="submit">Search</button>
+    </form>
+    <!-- end of -->
+
+    <!-- cerate empty container where images will go -->
+    <div id="images"></div>
+
+    <script>
+      (function () {
+        // url for the Flickr public photo feed with JSON callback
+        var flickerAPI =
+          "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+
+        // added input
+        $("#photoForm").on("submit", function (e) {
+          e.preventDefault();
+          let tag = $("#tagInput").val();
+          console.log(tag);
+
+          $("#images").empty(); // clear previous images
+          /*
+          - Ask Flickr for JSON data using jQuery's getJSON
+          - appends the following to jsoncallback in the url string:
+          - jsoncallback=?&tags=tag&tagmode=any&format=json
+          - $.getJSON() returns a jqXHR (a jQuery Promise-like object).
+           .done(function(data) { ... }) registers a callback 
+            that runs when the request succeeds.
+          - data is the parsed JSON response from Flickr
+          - Need to have knowledge of data's structure
+          */
+          $.getJSON(flickerAPI, {
+            tags: tag, // turned into a variable
+            tagmode: "any",
+            format: "json",
+          }).done(function (data) {
+            // .done(callback) Runs only when the AJAX request succeeds
+            // Loop through each item (photo) in the response
+            // .each is jQuery’s way of doing a loop
+            // same as modern JS: data.items.forEach((item, i) => { ... });
+            $.each(data.items, function (i, item) {
+              // Append the image
+              // Create a new <img> element and set its src to the photo URL
+              /*
+              This is classic jQuery DOM manipulation:
+              $("<img>")
+              Creates a new jQuery object wrapping a new <img> element (not yet in the page).
+              .attr("src", item.media.m)
+              Sets the src attribute of that <img> to the photo URL.
+              item.media.m is where Flickr stores the URL for a medium-sized image.
+              .appendTo("#images")
+              Appends this <img> element to the element with id="images".
+              After this line runs, you now have an <img> inside <div id="images">.
+              */
+              $("<img>").attr("src", item.media.m).appendTo("#images");
+              //
+              // Append the description right after the image
+              // using the line provided in the final rubric
+              // very messy as there is a bunch of html
+              //$("#images").append($(item.description));
+              //
+              // Better UI is to append only the photo title
+              $("#images").append($("<p>").text(item.title));
+
+              if (i === 3) {
+                return false;
+              }
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<!--
+Should rewrite the entire example using:
+- fetch() and async/await
+- No jQuery
+- Proper error handling
+- Modern standards-compliant Flickr API calls
+-->
+
+<!--
+Where AJAX occurs in the code
+The AJAX request happens inside this call:
+
+$.getJSON(flickerAPI, {
+  tags: "mount rainier",
+  tagmode: "any",
+  format: "json",
+})
+
+Even though it’s not using the explicit $.ajax() method, 
+jQuery’s .getJSON() is built on top of $.ajax().
+
+In other words:
+$.getJSON() internally calls
+$.ajax({ url: ..., data: ..., dataType: "json", ... })
+
+Since you're calling Flickr with jsoncallback=?, jQuery automatically switches to JSONP mode, which still uses the internal AJAX mechanism, but via a <script> tag injection (because JSONP is a workaround for cross-origin restrictions).
+So the AJAX request is happening right here, just abstracted away.
+-->
+
+<!-- A NOTE ON FORMS:
+🧠 Key reasons to use a form
+1. The Enter key works automatically
+If the user types something into an <input> and presses Enter, the form submits.
+Without a form, you must write extra JavaScript to simulate this behavior.
+
+2. Forms are semantic HTML
+This means:
+- Screen readers understand them
+- Browsers apply built-in behavior correctly
+- Other developers immediately understand your structure
+
+Using a form tells the browser:
+“This is a section where the user provides input and submits something.”
+
+3. Forms give you built-in events
+You get the submit event for free:
+$("#photoForm").on("submit", function(e) { ... });
+
+If you don’t use a form, you must:
+attach a click handler to a button
+or attach a keypress handler for Enter
+or manually gather fields
+It becomes more work and less clean.
+
+4. Forms separate structure from behavior
+- HTML handles layout + input,
+- JavaScript handles the logic.
+This separation keeps code clean.
+
+5. Graceful degradation
+If JavaScript fails for any reason:
+- the form still collects input
+- the browser can still submit it normally (to a server) 
+-->
