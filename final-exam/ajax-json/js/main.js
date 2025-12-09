@@ -38,6 +38,11 @@
       // so i changed them to the 2 lines below
       .removeClass("iconoir-wifi-off iconoir-wifi spin")
       .addClass("iconoir-search");
+
+    // I added this line as the browser was remembering
+    // the last user input and not reloading it to the suggested 'Climate Change'
+    $("#searchTags").val("Climate Change");
+
     // TODO: Write your code after this line in this requestImages function
     var flickerAPI =
       "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -114,11 +119,14 @@
       // TODO: Prevent the default behavior of the form submit event, by
       // using the event parameter
       if (event) {
+        event.preventDefault();
       }
       // TODO: Call the requestImages function
+      requestImages();
 
       // TODO: return false (the old way of preventing the default
       // behavior of the form submit event)
+      return false;
     });
 
     // Make the initial AJAX request as the page loads
