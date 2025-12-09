@@ -44,7 +44,7 @@
           - appends the following to jsoncallback in the url string:
           - jsoncallback=?&tags=tag&tagmode=any&format=json
           - $.getJSON() returns a jqXHR (a jQuery Promise-like object).
-           .done(function(data) { ... }) registers a callback 
+           .done(function(data) { ... }) registers a callback
             that runs when the request succeeds.
           - data is the parsed JSON response from Flickr
           - Need to have knowledge of data's structure
@@ -53,15 +53,16 @@
             tags: tag, // turned into a variable
             tagmode: "any",
             format: "json",
-          }).done(function (data) {
-            // .done(callback) Runs only when the AJAX request succeeds
-            // Loop through each item (photo) in the response
-            // .each is jQuery’s way of doing a loop
-            // same as modern JS: data.items.forEach((item, i) => { ... });
-            $.each(data.items, function (i, item) {
-              // Append the image
-              // Create a new <img> element and set its src to the photo URL
-              /*
+          })
+            .done(function (data) {
+              // .done(callback) Runs only when the AJAX request succeeds
+              // Loop through each item (photo) in the response
+              // .each is jQuery’s way of doing a loop
+              // same as modern JS: data.items.forEach((item, i) => { ... });
+              $.each(data.items, function (i, item) {
+                // Append the image
+                // Create a new <img> element and set its src to the photo URL
+                /*
               This is classic jQuery DOM manipulation:
               $("<img>")
               Creates a new jQuery object wrapping a new <img> element (not yet in the page).
@@ -72,21 +73,24 @@
               Appends this <img> element to the element with id="images".
               After this line runs, you now have an <img> inside <div id="images">.
               */
-              $("<img>").attr("src", item.media.m).appendTo("#images");
-              //
-              // Append the description right after the image
-              // using the line provided in the final rubric
-              // very messy as there is a bunch of html
-              //$("#images").append($(item.description));
-              //
-              // Better UI is to append only the photo title
-              $("#images").append($("<p>").text(item.title));
+                $("<img>").attr("src", item.media.m).appendTo("#images");
+                //
+                // Append the description right after the image
+                // using the line provided in the final rubric
+                // very messy as there is a bunch of html
+                //$("#images").append($(item.description));
+                //
+                // Better UI is to append only the photo title
+                $("#images").append($("<p>").text(item.title));
 
-              if (i === 3) {
-                return false;
-              }
+                if (i === 3) {
+                  return false;
+                }
+              });
+            })
+            .fail(function () {
+              alert("Error loading images.");
             });
-          });
         });
       })();
     </script>
