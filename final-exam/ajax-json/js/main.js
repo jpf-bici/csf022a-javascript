@@ -29,48 +29,15 @@
     console.log("$form", $form);
   }
 
-  // TODO: In the requestImages function, make an AJAX request for JSONP data
-  // and append the item descriptions (which include images) into the #images
-  // HTML element.
-  // See the example called "Loads the four most recent pictures of Mount
-  // Rainier from the Flickr JSONP API."
-  // at: https://api.jquery.com/jQuery.getJSON/
-  // but get the tags from the #searchTags form HTML element.
-  // Make sure you use jQuery's .done and .fail AJAX methods.
-  //
-  // Inside .done you must
-  // a. Replace all content inside the #images HTML element
-  // so it doesn't have content from other AJAX requests in it.
-  // You must use this line of code to get an item's description
-  // (this is required in the rubric):
-  // $images.append($("<div>").append(item.description));
-  // Display all the items, unlike the example which only loads 4 items from
-  // Flickr.
-  // b. Animate the icon on the submit button by removing from the
-  // $submiticon the iconoir-wifi-off, iconoir-wifi, and spin classes and
-  // adding the iconoir-search class so the user will know the button can be
-  // used again to search Flickr.
-  // c. At the end of the .done function you need to alter the new elements
-  // just successfully loaded from Flickr:
-  // Use the jQuery attr function to make ONLY all of the <a> elements (the links)
-  // inside the div with the id of "images" have the target of "_blank" so when
-  // users click on them they open in a new window or tab. Also add the class
-  // flickrimage to ONLY all of the img elements inside the div with the id of "images"
-  // so that will be animated bigger with a blue glowing outline if a user hovers
-  // their mouse over it.
-  //
-  // Inside .fail let the user know that a failure occurred (which can
-  // happen if your Wi-Fi is turned off) by:
-  // a. Using the console.log function to say the search of Flickr failed.
-  // b. Animate the icon on the submit button by removing from the
-  // $submiticon the iconoir-search, iconoir-wifi, and spin classes and
-  // adding the iconoir-wifi-off class to indicate to the user that the
-  // search of Flickr failed.
   var requestImages = function () {
     var $submiticon = $("#submiticon");
     $submiticon
-      .removeClass("iconoir-wifi-off iconoir-search")
-      .addClass("iconoir-wifi spin");
+      //.removeClass("iconoir-wifi-off iconoir-search")
+      //.addClass("iconoir-wifi spin");
+      // the 2 lines above seemed to be a bug behavior w the icons,
+      // so i changed them to the 2 lines below
+      .removeClass("iconoir-wifi-off iconoir-wifi spin")
+      .addClass("iconoir-search");
     // TODO: Write your code after this line in this requestImages function
     var flickerAPI =
       "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -81,6 +48,8 @@
       let userInput = $("#searchTags").val();
       console.log(userInput);
 
+      $("#images").empty(); // clear previous images
+
       // Make an AJAX request for JSONP data and append the item descriptions
       // (which include images) into the #images HTML element.
       // url for the Flickr public photo feed with JSON callback
@@ -89,36 +58,48 @@
         tags: userInput,
         tagmode: "any",
         format: "json",
-      }).done(function (data) {
-        // .done(callback) Runs only when the AJAX request succeeds
-        // Loop through each item (photo) in the response
-        // .each is jQuery’s way of doing a loop
-        // same as modern JS: data.items.forEach((item, i) => { ... });
-        $.each(data.items, function (i, item) {
-          // Append the image
-          // Create a new <img> element and set its src to the photo URL
-          /*
-              This is classic jQuery DOM manipulation:
-              $("<img>")
-              Creates a new jQuery object wrapping a new <img> element (not yet in the page).
-              .attr("src", item.media.m)
-              Sets the src attribute of that <img> to the photo URL.
-              item.media.m is where Flickr stores the URL for a medium-sized image.
-              .appendTo("#images")
-              Appends this <img> element to the element with id="images".
-              After this line runs, you now have an <img> inside <div id="images">.
-              */
-          $("<img>").attr("src", item.media.m).appendTo("#images");
-          //
-          // Append the description right after the image
-          // using the line provided in the final rubric
-          // very messy as there is a bunch of html
-          //$("#images").append($(item.description));
-          //
-          // Better UI is to append only the photo title
-          $("#images").append($("<p>").text(item.title));
+      })
+        .done(function (data) {
+          // .done(callback) Runs only when the AJAX request succeeds
+          // Loop through each item (photo) in the response
+          $.each(data.items, function (i, item) {
+            // a. Replace all content inside the #images HTML element
+            // Append the description right after the image
+            // using the line provided in the final rubric:
+            // $images.append($("<div>").append(item.description));
+            // Note I changed it to $("#images") from $images
+            // and it seems to append BOTH the image and the description
+            $("#images").append($("<div>").append(item.description));
+          });
+          // Use the jQuery attr function to make ONLY all of the <a> elements (the links)
+          // inside the div with the id of "images" have the target of "_blank" so when
+          // users click on them they open in a new window or tab.
+          $("#images a").attr("target", "_blank");
+
+          // Add the class flickrimage to ONLY all of the img elements inside the div with the id of "images"
+          $("#images img").addClass("flickrimage");
+
+          // b. Animate the icon on the submit button by removing from the
+          // $submiticon the iconoir-wifi-off, iconoir-wifi, and spin classes and
+          // adding the iconoir-search class so the user will know the button can be
+          // used again to search Flickr.
+          $submiticon
+            .removeClass("iconoir-wifi-off iconoir-wifi spin")
+            .addClass("iconoir-search");
+        })
+        // Inside .fail let the user know that a failure occurred (which can
+        // happen if your Wi-Fi is turned off) by:
+        // a. Using the console.log function to say the search of Flickr failed.
+        // b. Animate the icon on the submit button by removing from the
+        // $submiticon the iconoir-search, iconoir-wifi, and spin classes and
+        // adding the iconoir-wifi-off class to indicate to the user that the
+        // search of Flickr failed.
+        .fail(function () {
+          console.log("Flickr search failed");
+          $submiticon
+            .removeClass("iconoir-search iconoir-wifi spin")
+            .addClass("iconoir-wifi-off");
         });
-      });
     }); // on submit
   }; // closing: requestImages = function () {
 
