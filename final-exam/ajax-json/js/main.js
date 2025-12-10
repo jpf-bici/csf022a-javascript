@@ -30,6 +30,7 @@
   }
 
   var requestImages = function () {
+    var $images = $("#images"); // per rubric requirement
     var $submiticon = $("#submiticon");
     $submiticon
       //.removeClass("iconoir-wifi-off iconoir-search")
@@ -53,7 +54,7 @@
       let userInput = $("#searchTags").val();
       console.log(userInput);
 
-      $("#images").empty(); // clear previous images
+      $images.empty(); // clear previous images
 
       // Make an AJAX request for JSONP data and append the item descriptions
       // (which include images) into the #images HTML element.
@@ -72,9 +73,8 @@
             // Append the description right after the image
             // using the line provided in the final rubric:
             // $images.append($("<div>").append(item.description));
-            // Note I changed it to $("#images") from $images
-            // and it seems to append BOTH the image and the description
-            $("#images").append($("<div>").append(item.description));
+            // Also (unlike the example) it seems to append BOTH the image
+            $images.append($("<div>").append(item.description));
           });
           // Use the jQuery attr function to make ONLY all of the <a> elements (the links)
           // inside the div with the id of "images" have the target of "_blank" so when
